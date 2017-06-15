@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE service-config PUBLIC "-//Berlioz//DTD::Services 1.0//EN"
+                            "https://pageseeder.org/schema/berlioz/services-1.0.dtd">
+<service-config version="1.0">
+
+  <services group="public">
+
+    <!-- Home -->
+    <service id="home" method="get">
+      <url pattern="/home"/>
+      <generator target="html"       name="bundles"      class="org.pageseeder.berlioz.bundler.GetWebBundles"/>
+    </service>
+
+    <!-- List -->
+    <service id="blog-list" method="get">
+      <url pattern="/blog"/>
+      <generator target="html"       name="bundles"      class="org.pageseeder.berlioz.bundler.GetWebBundles"/>
+      <generator target="main"       name="blog-list"    class="net.tyenki.kt.srv.ListBlogs"/>
+    </service>
+
+    <!-- Single entry -->
+    <service id="blog" method="get">
+      <url pattern="/blog/{id}"/>
+      <generator target="html"       name="bundles"      class="org.pageseeder.berlioz.bundler.GetWebBundles"/>
+      <generator target="main"       name="blog-entry"   class="net.tyenki.kt.srv.GetBlog"/>
+    </service>
+
+  </services>
+
+</service-config>

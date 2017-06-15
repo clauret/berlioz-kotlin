@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+  This file contains the global settings made available to generators in local.
+-->
+<global>
+
+  <berlioz>
+    <app title-flag="local"/>
+  </berlioz>
+
+</global>

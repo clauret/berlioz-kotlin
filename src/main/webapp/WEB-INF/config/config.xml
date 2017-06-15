@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+  Common configuration settings for the Stratabox app.
+-->
+<global>
+
+  <!--
+    Berlioz configuration options.
+  -->
+  <berlioz>
+    <errors handle="false" generator-catch="false"/>
+    <http compression="true" cache-control="no-cache"/>
+    <xml parse-strict="true" header.version="1.0" />
+    <xslt cache="true"/>
+    <jsbundler location="/js/_/">
+      <bundles global="/js/global.js"
+               group="/js/{GROUP}.js"
+               service="/js/{GROUP}/{SERVICE}.js"/>
+    </jsbundler>
+    <app version="@VERSION@" date="@DATE@"/>
+  </berlioz>
+
+</global>

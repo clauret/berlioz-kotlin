@@ -1,0 +1,90 @@
+/**
+ * General build for the app
+ */
+// Plugins
+plugins {
+  id 'org.akhikhl.gretty' version '1.4.2'
+  id 'org.jetbrains.kotlin.jvm' version '1.1.2'
+  id 'war'
+}
+
+// Where to find the dependencies of the project
+repositories {
+  maven { url "http://dl.bintray.com/pageseeder/maven" }
+  jcenter()
+}
+
+description = 'Example Berlioz app with Kotlin'
+version = file('version.txt').text
+
+// Java
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Dependencies for your production and test code
+dependencies {
+
+  // Compile time
+  compile (
+    'org.pageseeder.berlioz:pso-berlioz:0.11.1',
+    'org.pageseeder.berlioz:pso-berlioz-kickstart:0.11.1',
+    'org.pageseeder.berlioz:pso-berlioz-plus:0.5.0',
+    'org.pageseeder.xmlwriter:pso-xmlwriter:1.0.2',
+    'org.pageseeder.bastille:pso-bastille:0.10.0',
+    'org.pageseeder.bridge:pso-bridge:0.11.5',
+    'org.slf4j:slf4j-api:1.7.25'
+  )
+
+  compileOnly (
+    'org.eclipse.jdt:org.eclipse.jdt.annotation:2.0.0'
+  )
+
+  // Test dependencies
+  testCompile 'junit:junit:4.12'
+
+  // Required for Web App
+  providedCompile (
+    'javax.servlet:javax.servlet-api:3.1.0'
+  )
+
+  // Deployed on Berlioz
+  runtime (
+    'org.jetbrains.kotlin:kotlin-stdlib:1.1.2',
+    'net.sf.saxon:Saxon-HE:9.6.0-7',
+    'ch.qos.logback:logback-core:1.1.7',
+    'ch.qos.logback:logback-classic:1.1.7',
+    'com.owlike:genson:1.3'
+  )
+
+}
+
+// Archive
+war {
+  archiveName 'root.war'
+}
+
+// Local Jetty
+gretty {
+  jvmArgs = ['-Dberlioz.mode=local']
+  httpPort = 8999
+  httpsEnabled = true
+  httpsPort = 8444
+  contextPath = '/'
+  servletContainer = 'jetty9'
+  webappCopy { 
+    exclude 'WEB-INF/config/config.xml'
+    exclude 'WEB-INF/config/*-*.xml'
+    into('WEB-INF/config') {
+      from "$webAppDirName/WEB-INF/config"
+      include "config.xml"
+      include "*-local.xml"
+      filter {
+        it.replaceAll('@VERSION@', version).replaceAll('@DATE@', new Date().format('yyyy-MM-dd'))
+      }
+    }
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '3.5'
+}
